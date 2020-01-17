@@ -10,7 +10,7 @@ minint = min(gri(:));
 [minrow, mincol] = find(gri == minint);
 fprintf('Maximum intensity: %d at location %d, %d\n', maxint, maxrow(1), maxcol(1));
 fprintf('Minimum intensity: %d at location %d, %d\n', minint, minrow(1), mincol(1));
-fprintf('Image size: %d\n', s.bytes);
+fprintf('Image size: %d bytes\n', s.bytes);
 
 resized = lowerres(i);
 imshow(resized);
