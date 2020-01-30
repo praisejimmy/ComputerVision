@@ -1,10 +1,12 @@
 clc
 
 im = imread('Boat2.tif');
-figure(1);imshow('Boat2.tif');
+figure(1);
+imshow('Boat2.tif');
 
 filtered = median_filter(im, 3);
-figure(2);imshow(filtered);
+figure(2);
+imshow(filtered);
 
 im = imread('building.gif');
 
