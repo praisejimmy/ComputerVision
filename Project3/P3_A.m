@@ -1,6 +1,7 @@
 clc;
 clear m;
 clear n;
+close all;
 %RGB image of board
 rgb_board = imread('go1.jpg');
 %BW image of black go piece
