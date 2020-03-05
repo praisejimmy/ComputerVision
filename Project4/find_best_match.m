@@ -18,11 +18,11 @@ for i = 1: size_desc1(1)
             best_point = locs_2(j, :);
         end
     end
-%     if smallest > 1000
-%         best_match(i, :) = [0 0];
-%     else
+    if smallest > 1000
+        best_match(i, :) = [0 0];
+    else
         best_match(i, :) = best_point(:);
-%     end
+    end
 end
 
 end

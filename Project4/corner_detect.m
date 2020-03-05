@@ -1,7 +1,9 @@
 function [corners] = corner_detect(im)
 %CORNER_DETECT Summary of this function goes here
 %   Detailed explanation goes here
-im = rgb2gray(im);
+if size(im,3)==3
+    im = rgb2gray(im);
+end
 
 k = 0.04;
 sx = (1/8).*fspecial('sobel');
@@ -33,7 +35,7 @@ for i = 1:im_size(1)
 end
 
 max_r = max(r, [], 'all');
-thresh = max_r * 0.3;
+thresh = max_r * 0.2;
 for i = 1:im_size(1)
     for j = 1:im_size(2)
         if r(i, j) < thresh
