@@ -1,43 +1,76 @@
 close all
-% Generate 5 random clusters
-N = [300, 350, 400, 600, 1000]; % [points per cluster
-% Define covariance matrices
-Sigma = zeros(2, 2, 5);
-Sigma(:,:,1) = [1 0.8; 0.8 1];
-Sigma(:,:,2) = [3 0.2; 0.2 3];
-Sigma(:,:,3) = [7 0; 0 7];
-Sigma(:,:,4) = [1 -0.5; -0.5 5];
-Sigma(:,:,5) = [2 -0.8; -0.8 5];
 
-points = imread("t1.jpg");
+%image = imread("t6.jpg");
 
-figure(1)
-scatter(points(:,1), points(:,2),1)
-title('Original Scatter Plot')
-xlabel('x')
-ylabel('y')
+%[L, centers] = imsegkmeans(image, 7);
+%B = labeloverlay(image,L);
+%imshow(B)
+%title('Labeled Image')
 
 
-% K-means Clustering
-IDX = kmeans(points,5);
 
-% Plot each cluster with a separate color
-colors = ['b', 'g', 'r'];
-figure(2)
-hold on
-for n = 1:5
-    group = find(IDX == n);
-    scatter(points(group, 1), points(group, 2), 3, colors(n))
+img=imread('t3.jpg');
+%im = imresize(img, 0.1);
+im_size = size(img);
+maskOut=emmpm(img,25);
+mask_size = size(maskOut);
+imshow(maskOut,[]);
+
+for i = 1: 25
+    temp_image = uint8(zeros(mask_size));
+    for j = 1: mask_size(1)
+        for k = 1: mask_size(2)
+            if(maskOut(j,k) == i)
+               temp_image(j,k,1) = img(j+1,k+1,1);
+               temp_image(j,k,2) = img(j+1,k+1,2);
+               temp_image(j,k,3) = img(j+1,k+1,3);
+            else
+               temp_image(j,k,1) = 0;
+               temp_image(j,k,2) = 0;
+               temp_image(j,k,3) = 0;
+            end
+        end
+    end
+    figure(i+2);
+    imshow(temp_image);
 end
-title('Kmeans Clustered Points')
-xlabel('x')
-ylabel('y')
-    
-% EM Clustering
-gmm = fitgmdist(points,5);
-em_idx = cluster(gmm, points);
-figure(3)
-gscatter(points(:,1), points(:,2), em_idx)
-title('EM Clustering')
-xlabel('x')
-ylabel('y')
+        
+
+figure(1);  
+imshow(maskOut);
+%imwrite(maskOut, "t5_em_k25.jpg");
+
+[n, edges] = histcounts(maskOut,3);
+
+size_mask = size(maskOut);
+hist_mask = size(edges);
+lower_edge = 0.0;
+upper_edge = edges(1,1);
+
+
+for k = 1: hist_mask(2)
+    result = zeros(size_mask(1), size_mask(2), 3);
+    for i = 1: size_mask(1)
+        for j = 1: size_mask(2)
+            if(maskOut(i,j) >= lower_edge && maskOut(i,j) <= upper_edge)
+                result(i,j,1) = img(i,j,1);
+                result(i,j,2) = img(i,j,2);
+                result(i,j,3) = maskOut(i,j,3);
+            else
+                result(i,j,1) = 0;
+                result(i,j,2) = 0;
+                result(i,j,3) = 0;
+            end
+        end
+    end
+    if(k+1 < hist_mask(2))
+        lower_edge = upper_edge;
+        upper_edge = edges(1,k+1);
+    else
+        lower_edge = upper_edge;
+        upper_edge = max(edges);
+    end
+    figure(k+3);
+    imshow(result);
+end
+
