@@ -7,13 +7,11 @@ close all
 %imshow(B)
 %title('Labeled Image')
 
-img = imread("t6.jpg");
-im = imresize(img, 0.1);
+img = imread("t5.jpg");
+%img = imresize(img, 0.1);
 maskOut=emmpm(img,6,3);
 im_size = size(img);
 mask_size = size(maskOut);
-figure(100);
-imshow(maskOut,[]);
 
 straw_boxes = double(zeros(10000,4));
 count = 1;
@@ -62,12 +60,19 @@ for i = 1: 6
             end
         end
         red_hist = histogram(temp_rect(:,:,1),5);
+        r_bin_edge = int8(red_hist.BinEdges(I_RED));
+        r_max_avg = int8((abs(red_hist.BinEdges(I_RED+1)) + abs(red_hist.BinEdges(I_RED)))/2);
         [max_red, I_RED] = max(red_hist.Values);
         green_hist = histogram(temp_rect(:,:,2),5);
-        [max_green, I_green] = max(green_hist.Values);
-        red_hist = histogram(temp_rect(:,:,1),5);
-        [max_red, I_RED] = max(red_hist.Values);
-        if(I_RED ~= 1 && temp(3) > 2.0 && temp(4) > 2.0 && I_RED >3)
+        g_bin_edge = int8(green_hist.BinEdges(I_GREEN));
+        g_max_avg = int8((abs(green_hist.BinEdges(I_GREEN+1)) + abs(green_hist.BinEdges(I_GREEN)))/2);
+        [max_green, I_GREEN] = max(green_hist.Values);
+        blue_hist = histogram(temp_rect(:,:,3),5);
+        b_bin_edge = int8(blue_hist.BinEdges(I_BLUE));
+        b_max_avg = int8((abs(blue_hist.BinEdges(I_BLUE+1)) + abs(blue_hist.BinEdges(I_BLUE)))/2);
+        [max_blue, I_BLUE] = max(blue_hist.Values);
+        
+        if(((r_bin_edge ~= 0 || r_max_avg ~= 0) && temp(3) > 3.0 && temp(4) > 3.0) && g_max_avg < 40)
             num_straw = num_straw + 1;
             straw_boxes(count,:) = temp;
             count = count + 1;

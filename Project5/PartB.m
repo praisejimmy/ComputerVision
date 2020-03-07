@@ -8,7 +8,7 @@ close all
 %title('Labeled Image')
 
 img = imread("t6.jpg");
-im = imresize(img, 0.1);
+%img = imresize(img, 0.1);
 maskOut=emmpm(img,6,3);
 im_size = size(img);
 mask_size = size(maskOut);
@@ -72,7 +72,7 @@ for i = 1: 6
         b_max_avg = int8((abs(blue_hist.BinEdges(I_BLUE+1)) + abs(blue_hist.BinEdges(I_BLUE)))/2);
         [max_blue, I_BLUE] = max(blue_hist.Values);
         
-        if(((r_bin_edge ~= 0 || r_max_avg ~= 0) && temp(3) > 3.0 && temp(4) > 3.0) && g_max_avg < 20)
+        if(((r_bin_edge ~= 0 || r_max_avg ~= 0) && temp(3) > 3.0 && temp(4) > 3.0) && g_max_avg < 30)
             num_straw = num_straw + 1;
             straw_boxes(count,:) = temp;
             count = count + 1;
