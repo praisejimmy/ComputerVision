@@ -1,0 +1,14 @@
+Steps:
+1. Find template images for only california plates
+	- 36 templates needed, 26 letters and 10 digits
+
+2. Filter image to remove noise
+	- Use median or Gaussian filter
+
+3. Apply edge detector to isolate regions
+	- Turn input into binary image of characters and background
+
+4. Run connected component analysis to group all regions into individual characters
+
+5. Find each region and match with each of the 36 templates
+	- Find highest correlation coefficient and extract digital character

@@ -1,5 +1,6 @@
 close all
 
+% initialize RGB background and foreground histograms
 fore_r_hist = uint32(zeros(1, 255));
 fore_g_hist = uint32(zeros(1, 255));
 fore_b_hist = uint32(zeros(1, 255));
@@ -8,13 +9,14 @@ back_r_hist = uint32(zeros(1, 255));
 back_g_hist = uint32(zeros(1, 255));
 back_b_hist = uint32(zeros(1, 255));
 
-
+% all files for images and their masks
 myFiles = dir(fullfile('S','*.jpg'));
 myMasks = dir(fullfile('s_mask','*.jpg'));
 
 size_mask = size(imread(strcat('S/', myFiles(1).name)));
 size_original = size(imread(strcat('S/', myFiles(1).name)));
 
+% create filtered images to only show strawberries
 for k = 1:length(myFiles)
     num = int2str(k);
     original = imread(strcat('S/s', num, '.JPG'));
@@ -31,6 +33,7 @@ for k = 1:length(myFiles)
     imwrite(original, strcat('foreground/fore_', myFiles(k).name)); 
 end
 
+% create filtered images to only show backgrounds
 for k = 1:length(myFiles)
     num = int2str(k);
     original = imread(strcat('S/s', num, '.JPG'));
@@ -50,6 +53,7 @@ end
 foreground_images = dir(fullfile('foreground', '*.jpg'));
 background_images = dir(fullfile('background', '*.jpg'));
 
+% initialize the gray scale and HSV histograms
 im = imread(strcat('foreground/', foreground_images(1).name));
 grayImage = rgb2gray(im);
 hsvImage = rgb2hsv(im);
@@ -61,6 +65,7 @@ fore_s_hist = hist(s(:), 40);
 v = hsvImage(:, :, 3);
 fore_v_hist = hist(v(:), 40);
 
+% fill in all histograms for strawberry images
 for k = 1:length(foreground_images)
     im = imread(strcat('foreground/', foreground_images(k).name));
     [fore_r_hist, fore_g_hist, fore_b_hist] = update_rgb_hist(im, fore_r_hist, fore_g_hist, fore_b_hist);
@@ -92,6 +97,7 @@ back_s_hist = hist(s(:), 40);
 v = hsvImage(:, :, 3);
 back_v_hist = hist(v(:), 40);
 
+% fill in all histograms for background images
 for k = 1:length(background_images)
     im = imread(strcat('background/', background_images(k).name));
     [back_r_hist, back_g_hist, back_b_hist] = update_rgb_hist(im, back_r_hist, back_g_hist, back_b_hist);
@@ -114,6 +120,7 @@ back_v_hist(1) = 0;
 
 scale = linspace(0, 1.0, 40);
 
+% plot all histograms
 figure('Name', 'Foreground red histogram')
 bar(fore_r_hist);
 figure('Name', 'Foreground green histogram')

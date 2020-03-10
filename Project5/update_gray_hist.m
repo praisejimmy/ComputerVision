@@ -1,6 +1,6 @@
 function [hist] = update_gray_hist(im, hist)
-%UPDATE_GRAY_HIST Summary of this function goes here
-%   Detailed explanation goes here
+% updates a grayscale histogram given an image 
+
 im_size = size(im);
 for i = 1:im_size(1)
     for j = 1:im_size(2)

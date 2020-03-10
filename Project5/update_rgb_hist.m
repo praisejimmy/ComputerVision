@@ -1,6 +1,5 @@
 function [r_hist, g_hist, b_hist] = update_rgb_hist(im, r_hist, g_hist, b_hist)
-%UPDATE_HIST Summary of this function goes here
-%   Detailed explanation goes here
+% Updates given histograms with data from all pixels in im
 
 im_size = size(im);
 for i = 1: im_size(1)
