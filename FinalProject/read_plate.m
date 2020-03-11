@@ -33,10 +33,11 @@ for i = 1:count - 1
     roi_coord = [uint8(bbs(i, 1)) uint8(bbs(i, 2))];
     roi = im_gray(roi_coord(2):roi_coord(2) + bbs(i, 4), roi_coord(1):roi_coord(1) + bbs(i, 3));
     roi = roi > (max(roi) * .7);
-    roi = int8(roi * 1);
     roi = imcomplement(roi);
+    roi = int8(roi * 1);
     for i = 1:length(bin_templates)
-        curr_template = imread(strcat('CharacterBinaryTemplates/', bin_templates(i).name));
+        num = int2str(i);
+        curr_template = imread(strcat('CharacterBinaryTemplates/', num, '.png'));
         curr_template = imcomplement(curr_template);
         curr_template = int8(curr_template * 1);
         curr_template = imresize(curr_template, size(roi));
@@ -50,6 +51,5 @@ for i = 1:count - 1
     end
     text = strcat(text, char_lut(highest_corr_ind));
 end
-hold off;
 end
 
