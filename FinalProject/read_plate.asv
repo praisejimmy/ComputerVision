@@ -1,0 +1,20 @@
+function [text] = read_plate(im)
+%READ_PLATE Summary of this function goes here
+%   Detailed explanation goes here
+im = rgb2gray(im);
+im = medfilt2(im);
+E=edge(im,'canny',[0.4*0.6 0.6],2.5);
+conn = bwconncomp(E);
+res = regionprops(conn, 'BoundingBox');
+
+hold on;
+figure(1000);
+imshow(im);
+for z =1: length(res)
+    if((thisBB(4)/thisBB(3)) < 2.1 && 
+        thisBB = res(z).BoundingBox;
+        rectangle('position', [thisBB(1), thisBB(2), thisBB(3), thisBB(4)], 'Edgecolor', 'g');
+end
+hold off;
+end
+
