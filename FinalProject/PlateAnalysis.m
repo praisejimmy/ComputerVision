@@ -1,11 +1,11 @@
 close all
-im = imread('./PlateSamples/ca1635.png');
 images = dir(fullfile('./PlateSamples', '*.png'));
-g = fspecial('gaussian', 3, .7);
+% Read in every number plate sample photo
 for i = 1:length(images)
     im = imread(strcat('./PlateSamples/', images(i).name));
+    % Read the text on the plate and display
     text = read_plate(im);
     disp(text);
     imshow(im);
-    x = 1;
+    pause;
 end 
