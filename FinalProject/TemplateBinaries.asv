@@ -1,8 +1,0 @@
-close all
-
-templates = dir(fullfile('./CharacterTemplates/', '*.PNG'));
-for i = 1:length(templates)
-    im = imread(strcat('./CharacterTemplates/', templates(i).name));
-    im = rgb2gray(im);
-    maxval = max(
-end

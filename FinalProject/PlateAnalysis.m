@@ -7,5 +7,5 @@ for i = 1:length(images)
     text = read_plate(im);
     disp(text);
     imshow(im);
-    pause;
+    pause
 end 
